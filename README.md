@@ -1,4 +1,5 @@
 EduExcellence-School-Management-System
+----------------------------------------
 A comprehensive School Management Software designed for EduExcellence, developed using Java, Spring Boot, Spring Web, Spring Data JPA, and H2 (in-memory database). This project implements a microservice architecture to manage students, including all CRUD operations.
 
 Key Features Student Management: CRUD operations for student records REST APIs: Fetch all students Fetch a single student Create a new student Update a student Delete a student Microservices Architecture: Service registry/discovery Load balancing Circuit breaker Technologies Used: Java, Spring Boot, Spring Web, Spring Data JPA, H2 database Getting Started Prerequisites Java 8 or higher Maven Git Setup Instructions Clone the repository:
