@@ -1,43 +1,45 @@
 package com.schoolmanagment.service;
 
+import com.schoolmanagment.model.Student;
+import com.schoolmanagment.repo.StuRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.schoolmanagment.model.Student;
-import com.schoolmanagment.repo.StuRepository;
-
 @Service
 public class StudentService {
-	@Autowired
-	private StuRepository studentRepository;
 
-	public List<Student> getAllStudents() {
-		List<Student> Students = new ArrayList<>();
-		studentRepository.findAll().forEach(student -> Students.add(student));
-		
-		return Students;
+    @Autowired
+    private StuRepository studentRepository;
 
-	}
+    @Transactional(readOnly = true)
+    public List<Student> getAllStudents() {
+        List<Student> students = new ArrayList<>();
+        studentRepository.findAll().forEach(students::add);
+        return students;
+    }
 
-	public Student getstudentById(int id) {
-		return studentRepository.findById(id).get();
+    @Cacheable(value = "students", key = "#id") // CRITICAL: Redis Caching
+    @Transactional(readOnly = true)
+    public Student getstudentById(int id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+    }
 
-	}
+    @Transactional // CRITICAL: Atomic Transaction management
+    @CacheEvict(value = "students", key = "#student.id", allEntries = true)
+    public Student saveOrUpdateStudent(Student student) {
+        return studentRepository.save(student);
+    }
 
-	public Student saveOrUpdateStudent(Student student) {
-		return studentRepository.save(student);
-
-	}
-
-	public void  deleteById(int id) {
-		// TODO Auto-generated method stub
-		studentRepository.deleteById(id);;
-	}
-	
-
-	
-
+    @Transactional
+    @CacheEvict(value = "students", key = "#id")
+    public void deleteById(int id) {
+        studentRepository.deleteById(id);
+    }
 }

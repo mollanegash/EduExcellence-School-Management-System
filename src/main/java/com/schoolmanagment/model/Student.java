@@ -1,84 +1,35 @@
 package com.schoolmanagment.model;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "students")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
-	@Id
-	private int id;
-	@Column
-	private String student_name;
-	@Column
-	private String email;
-	//private String professorName;
-	@Column
-	private String regDate;
-	@Column
-	private String course_name;
-	Student(){
-		
-	}
-	
-	public Student(int id, String student_name, String email, String regDate, String course_name) {
-		super();
-		this.id = id;
-		this.student_name = student_name;
-		this.email = email;
-		this.regDate = regDate;
-		this.course_name = course_name;
-	}
 
-	
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Version // CRITICAL: Handles Concurrency (Optimistic Locking)
+    private Integer version;
 
-	public String getStudent_name() {
-		return student_name;
-	}
+    @Column(name = "student_name")
+    private String studentName;
 
-	public void setStudent_name(String student_name) {
-		this.student_name = student_name;
-	}
+    @Column(unique = true)
+    private String email;
 
-	public String getEmail() {
-		return email;
-	}
+    private String regDate;
+    private String courseName;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getCourse_name() {
-		return course_name;
-	}
-
-	public void setCourse_name(String course_name) {
-		this.course_name = course_name;
-	}
-
-	@Override
-	public String toString() {
-		return "Student [name=" + student_name + ", id=" + id + ", email=" + email + ", regDate=" + regDate + "]";
-	}
-	
-
+    @Override
+    public String toString() {
+        return "Student [name=" + studentName + ", id=" + id + ", email=" + email + "]";
+    }
 }
