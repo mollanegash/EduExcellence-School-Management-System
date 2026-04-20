@@ -6,13 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.schoolmanagment.model.Student;
@@ -29,6 +23,7 @@ students with all CRUD operations.
 5. An API to update a student
 Hint: Service registry/discovery, load balancing, circuit breaker.*/
 @RestController
+@RequestMapping("/student") // This handles the "/student" part
 public class StudentController {
 	@Autowired
 	StudentService studentService;
@@ -59,7 +54,7 @@ public class StudentController {
 	  return CollectionModel.of(students, linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
 	}*/
 	
-	@GetMapping("/students/{id}")
+	@GetMapping("/{id}")
 	// An API to fetch a single student
 	private Student getStudent(@PathVariable("id") Long id) {
 		// Student st =strepo.findAll()

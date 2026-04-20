@@ -27,8 +27,7 @@ public class StudentService {
     @Cacheable(value = "student-cache", key = "#id")// CRITICAL: Redis Caching
     @Transactional(readOnly = true)
     public Student getstudentById(Long id) {
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+        return studentRepository.findById(id).orElse(null);
     }
 
     @Transactional // CRITICAL: Atomic Transaction management
