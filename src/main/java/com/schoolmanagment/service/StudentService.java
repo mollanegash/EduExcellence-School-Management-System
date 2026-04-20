@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional // Ensures data integrity
 public class StudentService {
 
     @Autowired
@@ -23,10 +24,9 @@ public class StudentService {
         studentRepository.findAll().forEach(students::add);
         return students;
     }
-
-    @Cacheable(value = "students", key = "#id") // CRITICAL: Redis Caching
+    @Cacheable(value = "student-cache", key = "#id")// CRITICAL: Redis Caching
     @Transactional(readOnly = true)
-    public Student getstudentById(int id) {
+    public Student getstudentById(Long id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
     }
@@ -39,7 +39,7 @@ public class StudentService {
 
     @Transactional
     @CacheEvict(value = "students", key = "#id")
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         studentRepository.deleteById(id);
     }
 }

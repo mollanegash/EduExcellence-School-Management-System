@@ -61,7 +61,7 @@ public class StudentController {
 	
 	@GetMapping("/students/{id}")
 	// An API to fetch a single student
-	private Student getStudent(@PathVariable("id") int id) {
+	private Student getStudent(@PathVariable("id") Long id) {
 		// Student st =strepo.findAll()
 
 		return studentService.getstudentById(id);
@@ -96,7 +96,7 @@ public class StudentController {
 	//An API to delete a student
 
 	@DeleteMapping("students/{id}")
-	private void deleteStudenet(@PathVariable("id") int id) {
+	private void deleteStudenet(@PathVariable("id") Long id) {
 		studentService.deleteById(id);
 
 	}
@@ -104,7 +104,7 @@ public class StudentController {
 	//An API to update a student
 
 	@PutMapping("/students/{id}")
-	private Student putData(@RequestBody Student newStudent,@PathVariable("id")int id) {
+	private Student putData(@RequestBody Student newStudent,@PathVariable("id")Long id) {
 		return studentService.saveOrUpdateStudent(newStudent);
 		
 		
